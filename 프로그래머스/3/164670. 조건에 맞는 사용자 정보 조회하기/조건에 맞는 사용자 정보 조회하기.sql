@@ -1,12 +1,8 @@
-SELECT A.WRITER_ID AS USER_ID, B.NICKNAME, 
-CONCAT(CITY, ' ', STREET_ADDRESS1, ' ', STREET_ADDRESS2) AS 전체주소, 
-CONCAT(
-        SUBSTR(TLNO,1,3), '-', 
-        SUBSTR(TLNO,4,4), '-', 
-        SUBSTR(TLNO,8,4)
-    ) AS 전화번호
-FROM USED_GOODS_BOARD A
-JOIN USED_GOODS_USER B ON A.WRITER_ID = B.USER_ID
-GROUP BY A.WRITER_ID, 전체주소, 전화번호
-HAVING COUNT(*) >= 3 -- 중고거래 게시물을 3건 이상 등록한 사용자
-ORDER BY USER_ID DESC;
+
+SELECT ugu.user_id, nickname, concat(city, " ", street_address1 , " ",  street_address2) as 전체주소,
+       concat(substr(tlno,1,3),'-',substr(tlno,4,4),'-',substr(tlno,8,4)) as 전화번호
+from used_goods_board as ugb
+inner join used_goods_user as ugu on ugb.writer_id = ugu.user_id
+group by ugu.user_id
+having count(*) >= 3
+order by user_id desc
